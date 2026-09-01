@@ -75,7 +75,33 @@ Before moving into Linux administration, I practiced the core skills needed to w
 - Identified the SSH service's PID.
 - Observed SSH connection information in service logs.
 - Listed currently running services.
+ 
 
+## Day 2 Linux Administration: Logs and Troubleshooting
+
+### What I learned
+## Day 2 - Linux Logs & Troubleshooting
+
+## Day 2 - Linux Logs & Troubleshooting
+
+### What I Practiced
+- Investigated SSH service logs using `journalctl`.
+- Viewed recent logs and filtered logs by time.
+- Explored Linux log files under `/var/log`.
+- Inspected `/var/log/auth.log` for SSH authentication activity.
+- Used `grep` to filter SSH-related log entries.
+- Reviewed file ownership and permissions to determine whether my user could read a log file.
+
+### Troubleshooting Practice
+I practiced troubleshooting service failures by first checking the service status, then reviewing logs to identify the actual cause before taking action.
+
+Examples included:
+- Identifying failed SSH password authentication from logs.
+- Recognizing a port conflict from an "Address already in use" error.
+- Identifying a file permission problem when an application could not write data.
+
+### Key Lesson
+A failed service is the result, not necessarily the root cause. Check the logs for evidence before restarting or changing the system.
 ### Why It Matters
 
 Cloud Support engineers need to navigate Linux systems, inspect system resources, troubleshoot processes, manage services, understand permissions, and remotely administer Linux servers.
