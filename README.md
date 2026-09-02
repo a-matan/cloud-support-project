@@ -105,3 +105,27 @@ A failed service is the result, not necessarily the root cause. Check the logs f
 ### Why It Matters
 
 Cloud Support engineers need to navigate Linux systems, inspect system resources, troubleshoot processes, manage services, understand permissions, and remotely administer Linux servers.
+
+## Day 3 - Users, Groups, Permissions, sudo, and SSH
+
+### What I practiced
+- Used `id` to inspect user and group membership.
+- Created a new Linux user with `adduser`.
+- Added users to supplementary groups with `usermod -aG`.
+- Used `su -` to switch between users.
+- Practiced owner, group, and others permissions.
+- Used `chown` to change ownership and `chmod` to change permissions.
+- Created a shared `support` group for Mohamed and Adam.
+- Configured `/shared-lab` so members of the support group can write to it.
+- Tested permissions by creating a file as Adam.
+- Connected to the server through SSH as different Linux users.
+
+### Troubleshooting lessons
+- Check both file permissions and parent directory permissions.
+- Directory `x` permission controls whether a user can traverse the directory.
+- A user can access a resource through group permissions when they belong to the resource's group.
+- If SSH login succeeds but file access fails, investigate Linux permissions.
+- If SSH authentication fails before getting a shell, investigate authentication/login access first.
+
+### Key lesson
+Linux access is determined by user identity, group membership, ownership, and permissions. Troubleshoot where the failure actually occurs instead of immediately using sudo or changing permissions.
