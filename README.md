@@ -79,12 +79,8 @@ Before moving into Linux administration, I practiced the core skills needed to w
 
 ## Day 2 Linux Administration: Logs and Troubleshooting
 
-### What I learned
 ## Day 2 - Linux Logs & Troubleshooting
 
-## Day 2 - Linux Logs & Troubleshooting
-
-### What I Practiced
 - Investigated SSH service logs using `journalctl`.
 - Viewed recent logs and filtered logs by time.
 - Explored Linux log files under `/var/log`.
@@ -102,9 +98,7 @@ Examples included:
 
 ### Key Lesson
 A failed service is the result, not necessarily the root cause. Check the logs for evidence before restarting or changing the system.
-### Why It Matters
 
-Cloud Support engineers need to navigate Linux systems, inspect system resources, troubleshoot processes, manage services, understand permissions, and remotely administer Linux servers.
 
 ## Day 3 - Users, Groups, Permissions, sudo, and SSH
 
@@ -136,8 +130,7 @@ Linux access is determined by user identity, group membership, ownership, and pe
 - Used `which` to check whether a command is available.
 - Used APT to refresh package information, inspect upgrades, install software, and remove software.
 - Troubleshot an `apt update` failure caused by incorrect VM system time.
-- Used `date`, `timedatectl`, and `chronyc tracking` to investigate time synchronization.
-- Created and exported environment variables.
+- Used `date`, `timedatectl`, and `chronyc tracking` to investigate time synchronization.- Created and exported environment variables.
 - Tested how exported variables are inherited by child shells.
 - Made an environment variable persistent using `~/.bashrc`.
 - Used `crontab` to schedule and verify an automatic job.
@@ -152,3 +145,39 @@ Linux access is determined by user identity, group membership, ownership, and pe
 
 ### Key lesson
 Package management, environment configuration, scheduling, and accurate system time are important parts of reliable Linux administration.
+
+## Day 5 - AWS EC2 and Linux Administration
+
+### What I practiced
+- Launched an Ubuntu EC2 instance in AWS.
+- Used a t2.micro instance with an 8 GiB gp3 EBS root volume.
+- Created an SSH key pair and protected the private key with `chmod 400`.
+- Configured the Security Group to allow SSH from my public IP.
+- Connected from my Mac to EC2 using SSH public-key authentication.
+- Verified identity and server information using `whoami`, `hostname`, and `pwd`.
+- Checked disk and memory resources using `df -h` and `free -h`.
+- Inspected the SSH service using `systemctl`.
+- Investigated SSH logs using `journalctl`.
+- Inspected user and group membership using `id`.
+- Refreshed APT package information and inspected available upgrades.
+- Verified the EC2 server time zone.
+- Created and tested a cron job on EC2.
+- Cleaned up the cron test after verification.
+- Terminated the EC2 instance and verified its EBS volume was deleted.
+- Removed the lab Security Group, AWS key pair, and local private key.
+
+### Troubleshooting Lessons
+- A running EC2 instance does not guarantee that SSH is reachable.
+- Security Groups control whether network traffic such as SSH on port 22 can reach an instance.
+- `Permission denied (publickey)` points toward SSH authentication, username, or key problems.
+- `df -h` checks filesystem usage, while `free -h` checks memory.
+- `top` helps identify processes consuming CPU or memory.
+- Investigate production systems before restarting services, killing processes, or applying upgrades.
+- Cron follows the server's configured time zone.
+
+### Key Lesson
+The Linux administration skills practiced locally transfer directly to cloud servers. AWS provides the infrastructure, while Linux tools are used to inspect, troubleshoot, and administer the operating system.
+
+### Why It Matters
+
+Cloud Support engineers need to navigate Linux systems, inspect system resources, troubleshoot processes, manage services, understand permissions, and remotely administer Linux servers.
