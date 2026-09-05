@@ -129,3 +129,26 @@ Cloud Support engineers need to navigate Linux systems, inspect system resources
 
 ### Key lesson
 Linux access is determined by user identity, group membership, ownership, and permissions. Troubleshoot where the failure actually occurs instead of immediately using sudo or changing permissions.
+
+## Day 4 - Packages, Environment Variables, and Cron
+
+### What I practiced
+- Used `which` to check whether a command is available.
+- Used APT to refresh package information, inspect upgrades, install software, and remove software.
+- Troubleshot an `apt update` failure caused by incorrect VM system time.
+- Used `date`, `timedatectl`, and `chronyc tracking` to investigate time synchronization.
+- Created and exported environment variables.
+- Tested how exported variables are inherited by child shells.
+- Made an environment variable persistent using `~/.bashrc`.
+- Used `crontab` to schedule and verify an automatic job.
+
+### Troubleshooting lessons
+- `apt update` refreshes package information but does not upgrade installed software.
+- Inspect available upgrades before changing a production system.
+- A variable must be exported if child processes need to inherit it.
+- Cron uses the server's time, so incorrect system time can affect scheduled jobs.
+- Test a command manually before scheduling it with cron.
+- Read the error message and investigate the root cause before making changes.
+
+### Key lesson
+Package management, environment configuration, scheduling, and accurate system time are important parts of reliable Linux administration.
