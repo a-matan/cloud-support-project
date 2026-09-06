@@ -181,3 +181,32 @@ The Linux administration skills practiced locally transfer directly to cloud ser
 ### Why It Matters
 
 Cloud Support engineers need to navigate Linux systems, inspect system resources, troubleshoot processes, manage services, understand permissions, and remotely administer Linux servers.
+
+### Networking Fundamentals — Ports, Protocols & Security Groups
+
+- Learned that an IP address identifies the network destination, while a port identifies the service/application.
+- Learned common ports:
+  - SSH: TCP 22
+  - DNS: UDP/TCP 53
+  - HTTP: TCP 80
+  - HTTPS: TCP 443
+- Used `ss -tln` and `ss -tuln` to inspect listening TCP and UDP sockets.
+- Learned the difference between TCP `LISTEN` and UDP `UNCONN`.
+- Learned how service binding affects reachability:
+  - `127.0.0.1` = local/loopback only
+  - `0.0.0.0` = all local IPv4 interfaces
+  - A specific IP = bound to that local interface/address
+- Learned that a listening service does not automatically mean remote traffic can reach it.
+- Learned how AWS Security Groups control inbound and outbound traffic.
+- Learned that Security Group rules consider protocol, port, and source/destination.
+- `/32` represents one IPv4 address.
+- `0.0.0.0/0` represents all IPv4 addresses.
+- AWS Security Groups are stateful, so return traffic for an allowed connection is automatically allowed.
+- Practiced troubleshooting by separating:
+  1. Network reachability
+  2. Security Group rules
+  3. Listening ports
+  4. Service status and logs
+
+**Why this matters:**  
+Cloud Support engineers must determine whether a connection problem is caused by networking, firewall/security rules, or the application itself instead of making changes or restarting services without evidence.
