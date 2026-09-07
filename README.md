@@ -210,3 +210,58 @@ Cloud Support engineers need to navigate Linux systems, inspect system resources
 
 **Why this matters:**  
 Cloud Support engineers must determine whether a connection problem is caused by networking, firewall/security rules, or the application itself instead of making changes or restarting services without evidence.
+
+## Networking Fundamentals
+
+### Skills Learned
+
+- Understand private vs. public IPv4 addresses
+- Understand basic CIDR notation including /16, /24, and /32
+- Identify network interfaces and IP addresses with `ip addr`
+- Inspect routes and the default gateway with `ip route`
+- Test IP reachability with `ping`
+- Troubleshoot DNS resolution with `resolvectl`
+- Understand common ports and TCP vs. UDP
+- Inspect listening TCP/UDP ports with `ss`
+- Understand service binding:
+  - `127.0.0.1` = loopback/local only
+  - `0.0.0.0` = all local IPv4 interfaces
+- Understand the difference between a listening service and firewall access
+- Configure and troubleshoot Ubuntu UFW firewall rules
+- Understand AWS Security Group inbound/outbound rules and stateful behavior
+- Apply least-privilege access using CIDR ranges and Security Group references
+- Use `curl -v` to trace DNS → TCP → TLS → HTTP
+- Distinguish connection timeout, connection refused, and HTTP application errors
+
+### Troubleshooting Approach
+
+I use an evidence-based troubleshooting process rather than changing configuration randomly:
+
+1. Reproduce the problem and determine how far the request gets.
+2. Verify IP addressing, routing, and DNS when relevant.
+3. Verify Security Group and host firewall rules.
+4. Check whether the expected port is listening and correctly bound.
+5. Check service status and logs.
+6. Follow application dependencies when the network path is working.
+7. Fix the identified root cause.
+8. Verify the solution from the service back to the original client.
+
+### Key Troubleshooting Tools
+
+- `ip addr` — What IP addresses and interfaces does this host have?
+- `ip route` — Where will traffic be sent?
+- `ping` — Is there evidence of IP reachability?
+- `resolvectl` — Can the hostname be resolved?
+- `ss -tln` — Is the expected TCP port listening, and where is it bound?
+- `systemctl` — Is the service running?
+- `journalctl` — Why is the service failing?
+- `ufw` — Does the Linux firewall allow the traffic?
+- `curl -v` — How far does the application request get?
+
+### Practical Troubleshooting
+
+Practiced layered troubleshooting across:
+
+Client → DNS → TCP → Security Group → UFW → Listening Port → Service → Application → Database
+
+Used evidence from each layer to determine the next troubleshooting step instead of making configuration changes based on assumptions.
