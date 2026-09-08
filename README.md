@@ -265,3 +265,132 @@ Practiced layered troubleshooting across:
 Client → DNS → TCP → Security Group → UFW → Listening Port → Service → Application → Database
 
 Used evidence from each layer to determine the next troubleshooting step instead of making configuration changes based on assumptions.
+
+
+## AWS Networking Fundamentals
+
+### VPC and Subnets
+- A VPC (Virtual Private Cloud) is a logically isolated network in AWS.
+- The VPC CIDR defines the private IP address range available to the VPC.
+- Example: `10.20.0.0/16`
+- Subnets divide the VPC into smaller networks, such as `10.20.5.0/24`.
+- A VPC spans an AWS Region, while each subnet belongs to one Availability Zone.
+- Resources can communicate privately across subnets and Availability Zones within the same VPC when routing and security rules allow it.
+
+### Public and Private Subnets
+- A public subnet has a route to an Internet Gateway (IGW).
+- A private subnet does not have a direct route to an IGW.
+- A resource in a public subnet still needs appropriate public addressing, routing, and security rules to communicate directly with the internet.
+- Private resources can use a NAT Gateway for outbound IPv4 internet access without becoming directly internet-reachable.
+
+### Route Tables
+Route tables determine where network traffic is sent.
+
+Example public subnet:
+
+    10.20.0.0/16 → local
+    0.0.0.0/0    → Internet Gateway
+
+Example private subnet with outbound internet access:
+
+    10.20.0.0/16 → local
+    0.0.0.0/0    → NAT Gateway
+
+AWS selects the most specific matching route (longest prefix match).
+
+Traffic between resources inside the VPC uses the local route rather than an Internet Gateway or NAT Gateway.
+
+### Internet Gateway vs NAT Gateway
+- Internet Gateway (IGW): provides a path between a VPC and the internet for appropriately configured public resources.
+- NAT Gateway: allows private resources to initiate outbound IPv4 internet connections and receive response traffic without making those resources directly reachable from the internet.
+- A NAT Gateway normally resides in a public subnet that has a route to an Internet Gateway.
+
+### Security Groups
+- Security Groups control permitted traffic at the resource/network-interface level.
+- Security Groups are stateful.
+- They contain allow rules; traffic not allowed is implicitly denied.
+- Security Groups do not create network paths. Routing provides the path; Security Groups provide permission.
+- Prefer referencing another Security Group when appropriate instead of relying on individual IP addresses.
+
+Example:
+
+    WEB-SG:
+    Inbound TCP 443 from 0.0.0.0/0
+
+    DB-SG:
+    Inbound TCP 5432 from WEB-SG
+
+### Network ACLs
+- Network ACLs (NACLs) provide subnet-level network filtering.
+- NACLs are stateless.
+- They support both allow and deny rules.
+- Traffic must satisfy both applicable NACL and Security Group controls.
+
+### Availability Zones
+- AWS Regions contain multiple Availability Zones (AZs).
+- A VPC spans the Region.
+- Each subnet exists in one Availability Zone.
+- Placing multiple servers in the same AZ provides server redundancy but does not protect against an AZ-level failure.
+- Distributing resources across multiple AZs improves availability.
+
+### AWS Network Troubleshooting
+
+Use evidence to determine how far a request traveled before deciding what to investigate.
+
+Mental model:
+
+    Destination
+        ↓
+    Route / Path
+        ↓
+    Network ACL
+        ↓
+    Security Group
+        ↓
+    OS Firewall
+        ↓
+    Listening Port / Service
+        ↓
+    Application
+
+Key troubleshooting principle:
+
+**Path + Permission + Service**
+
+- Route table: Is there a path to the destination?
+- Security controls: Is the traffic permitted?
+- Service: Is the application running and listening on the expected port?
+
+Examples:
+- `Could not resolve host` → investigate DNS first.
+- TCP connection timeout → investigate network path and security controls.
+- HTTP `500 Internal Server Error` → basic network connectivity is working; investigate the application and its dependencies.
+
+### Example: Web Server to Database
+
+    VPC: 10.20.0.0/16
+
+    Web EC2:
+    10.20.5.25
+
+    Database EC2:
+    10.20.8.15
+    PostgreSQL TCP 5432
+
+The web server and database communicate privately using:
+
+    10.20.0.0/16 → local
+
+The database Security Group can allow:
+
+    TCP 5432 from WEB-SG
+
+A NAT Gateway or Internet Gateway is not required for this private VPC communication.
+
+### Key Lesson
+
+Do not troubleshoot cloud networking by randomly checking components.
+
+Use evidence to determine how far the request traveled, then investigate the next layer.
+
+**Routing provides the path. Security controls provide permission. The service must still be available at the destination.**
